@@ -1,4 +1,4 @@
-Last modified : 2013-02-01 21:32:34 tkych
+Last modified : 2013-02-02 07:16:12 tkych
 
 Version: 0.0.10 (Alpha: Under Development)
 
@@ -36,8 +36,17 @@ Examples
 * My environment is: Linux-amd64, Core i3 2.20GHz, 4GB RAM, SBCL-1.3.3.
 
 ```lisp
+
 CL-REPL> (use-package :mod-prime)    ;'mod-prime' is nickname for cl-mod-prime
 => T
+
+CL-REPL> (prime-p 46116887)
+=> T
+=> 0                                 ;fail probability
+
+CL-REPL> (prime-p 4611686018427388039)
+=> T
+=> 1/1267650600228229401496703205376 ;fail probability
 
 CL-REPL> (factorize 42000000)
 => (2 2 2 2 2 2 2 3 5 5 5 5 5 5 7)   ;prime-factors
