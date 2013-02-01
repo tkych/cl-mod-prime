@@ -1,4 +1,4 @@
-Last modified : 2013-02-01 21:13:21 tkych
+Last modified : 2013-02-01 21:23:37 tkych
 
 Version: 0.0.10 (Alpha: Under Development)
 
@@ -66,10 +66,10 @@ Evaluation took:
 => 138887118337037179373987270174393996261443440883200142824729530101304676899255530725540449733203724419224498902439773767074362319130643291726464898871930836869876144519772157445996871560722567192534102362410201440406406553635556576910252943677026926228532581307334590673298564303609464269330957587451305799483
 => 1/1267650600228229401496703205376  ;fail probability
 
-CL-REPL> (defparameter \*large-prime\* \*)
-=> \*LARGE-PRIME\*
+CL-REPL> (defparameter *large-prime* *)
+=> *LARGE-PRIME*
 
-CL-REPL> (time (mod (expt \*large-prime\* \*large-prime\*) (1- \*large-prime\*))) ;Don't type this!
+CL-REPL> (time (mod (expt *large-prime* *large-prime*) (1- *large-prime*))) ;Don't type this!
 Evaluation took:
   13.858 seconds of real time
   ...
@@ -77,7 +77,7 @@ Evaluation took:
   
 ; Evaluation aborted on NIL.
 
-CL-REPL> (time (mod-expt \*large-prime\* \*large-prime\* (1- \*large-prime\*)))
+CL-REPL> (time (mod-expt *large-prime* *large-prime* (1- *large-prime*)))
 Evaluation took:
   0.000 seconds of real time
   0.000000 seconds of total run time (0.000000 user, 0.000000 system)
@@ -87,7 +87,7 @@ Evaluation took:
 
 => 1
 
-CL-REPL> (time (next-prime \*large-prime\*))
+CL-REPL> (time (next-prime *large-prime*))
 Evaluation took:
   3.814 seconds of real time
   3.808237 seconds of total run time (3.796237 user, 0.012000 system)
@@ -206,7 +206,7 @@ Note:
 Examples:
 
     (prime-p 42) => NIL, 0
-    (prime-p 43) => T, 0   ;43 < \*PRIME-P-SWICHING-LIMIT\*
+    (prime-p 43) => T, 0   ;43 < *PRIME-P-SWICHING-LIMIT*
     (prime-p 843231983040012492664856905761567078617345413887258638877481099493016757762394510526492481)
          => T, 1/1267650600228229401496703205376
 
@@ -348,7 +348,7 @@ Return set of invertible element below n.
 
 Example:
 
-      (Z\* 42) => (1 5 11 13 17 19 23 25 29 31 37 41)
+    (Z* 42) => (1 5 11 13 17 19 23 25 29 31 37 41)
 
 
 #### [Function] XGCD x y
@@ -358,7 +358,7 @@ X,Y must be integers.
 
 Example:
 
-  (xgcd 42 24) => 6, -1, 2   ;42\*(-1) + 24\*2 = 6
+    (xgcd 42 24) => 6, -1, 2   ;42*(-1) + 24*2 = 6
 
 
 #### [Function] PHI n
