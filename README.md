@@ -1,4 +1,4 @@
-Last modified : 2013-02-01 21:23:37 tkych
+Last modified : 2013-02-01 21:32:34 tkych
 
 Version: 0.0.10 (Alpha: Under Development)
 
@@ -214,8 +214,8 @@ Examples:
 #### [Special Variable] \*PRIME-P-SWICHING-LIMIT\*
 
 The function PRIME-P has internal dispatch that controls the algorithm of primality test.
-A integer below \*PRIME-P-SWICHING-LIMIT\*, is checked its primality by the Trial Division algorithm.
-A integer above \*PRIME-P-SWICHING-LIMIT\*, is checked its primality by the Miller-Rabin Probabilistic algorithm.
+A integer below \*PRIME-P-SWICHING-LIMIT\*, is checked primality by the Trial Division algorithm.
+A integer above \*PRIME-P-SWICHING-LIMIT\*, is checked primality by the Miller-Rabin Probabilistic algorithm.
 
 The default value of \*PRIME-P-SWICHING-LIMIT\* is 500000000.
 According to my experience with my environment (see. /cl-mod-prime/test.lisp, compare-td-mr),
@@ -273,7 +273,7 @@ Examples:
     (primes-below -1) => NIL
 
 
-#### [Function] FACTORIZE n &key (group? nil) (algorithm auto)
+#### [Function] FACTORIZE n &key (group? nil) (algorithm :auto)
 
 Return (values PRIME-FACTORS FAIL-PROBABILITY ALGORITHM).
 PRIME-FACTORS is sorted list of prime factors of N.
@@ -397,12 +397,12 @@ TODO
 Reference
 ---------
 
-- D. Knuth. The Art of Computer Programming, vol.2: Seminumerical Algorithms.
-            3rd ed., Addison-Wesley, 1997.
-
 - V. Shoup. A Computational Introduction to Number Theory and Algebra.
             2nd ed., Cambridge University Press, 2008.
             available at http://shoup.net/ntb/ntb-v2.pdf
+
+- D. Knuth. The Art of Computer Programming, vol.2: Seminumerical Algorithms.
+            3rd ed., Addison-Wesley, 1997.
 
 - Haruhiko Okumura, Arugorizumu Jiten, Gijyutsuhyo-ronsya, 1991.
 
