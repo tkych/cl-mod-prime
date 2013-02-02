@@ -1,4 +1,4 @@
-Last modified : 2013-02-02 07:16:12 tkych
+Last modified : 2013-02-02 20:16:52 tkych
 
 Version: 0.0.10 (Alpha: Under Development)
 
@@ -204,7 +204,7 @@ N must be a integer.
 
 Note:
 
-* If N is below \*PRIME-P-SWICHING-LIMIT\* (default is 35000000),
+* If N is below \*PRIME-P-SWICHING-LIMIT\* (default is 500000000),
   then FAIL-PROBABILITY is always 0.
   For more details, see doc in \*PRIME-P-SWICHING-LIMIT\*.
 

@@ -1,4 +1,4 @@
-;;;; Last modified : 2013-02-01 20:57:44 tkych
+;;;; Last modified : 2013-02-02 20:17:51 tkych
 
 ;; cl-mod-prime/prime.lisp
 
@@ -69,7 +69,7 @@ At most FAIL-PROBABILITY, RESULT may be wrong (that is, N is composite and RESUL
 N must be a integer.
 
 Note:
- * If N is below *PRIME-P-SWICHING-LIMIT* (default is 35000000),
+ * If N is below *PRIME-P-SWICHING-LIMIT* (default is 500000000),
    then FAIL-PROBABILITY is always 0.
    For more details, see doc in *PRIME-P-SWICHING-LIMIT*.
 
@@ -376,7 +376,8 @@ Examples:
 (defun random-prime (num-bits &optional (fail-probability=1/4^ 50))
   "Return (values NUM-BITS-PRIME FAIL-PROBABILITY).
 NUM-BITS-PRIME may be non-prime at most FAIL-PROBABILITY.
-NUM-BITS must be a positive fixnum above 1."
+NUM-BITS must be a positive fixnum above 1.
+"
   (unless (integerp num-bits)
     (error "~S is not integer." num-bits))
   (unless (<= 2 num-bits most-positive-fixnum)
