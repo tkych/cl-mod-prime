@@ -1,4 +1,4 @@
-Last modified : 2013-02-02 20:16:52 tkych
+Last modified : 2013-02-03 12:02:46 tkych
 
 Version: 0.0.10 (Alpha: Under Development)
 
@@ -408,7 +408,7 @@ Reference
 
 - V. Shoup. A Computational Introduction to Number Theory and Algebra.
             2nd ed., Cambridge University Press, 2008.
-            available at http://shoup.net/ntb/ntb-v2.pdf
+            available at http://shoup.net/ntb/
 
 - D. Knuth. The Art of Computer Programming, vol.2: Seminumerical Algorithms.
             3rd ed., Addison-Wesley, 1997.
