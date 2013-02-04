@@ -1,4 +1,4 @@
-;;;; Last modified : 2013-02-02 20:17:51 tkych
+;;;; Last modified : 2013-02-04 22:48:36 tkych
 
 ;; cl-mod-prime/prime.lisp
 
@@ -14,7 +14,7 @@
 ;; primes-below
 ;; factorize
 ;; *factorize-swiching-limit*
-;; random-factored
+;; random-factors
 
 ;;--------------------------------------------------------------------
 ;; abbrev TAOCP2 as 
@@ -786,21 +786,21 @@ Examples:
 
 
 ;;--------------------------------------------------------------------
-;; RANDOM-FACTORED integer &key group?
-;;                   => random-factored-number fail-probability
+;; RANDOM-FACTORS integer &key group?
+;;                   => random-factors-number fail-probability
 ;;--------------------------------------------------------------------
-;; c.f. CINTA, p.298, algorithm RFN (Random Factored Number)
+;; c.f. CINTA, p.298, algorithm RFN (Random Factors Number)
 
-(defun random-factored (n &key (group? nil))
-  "Return random factored number below N.
+(defun random-factors (n &key (group? nil))
+  "Return factorized random number below N.
 If group? is T, then factors will be grouped.
 N must be a integer above 1.
 
 Examples:
-  (random-factored 1)  => ERROR!!
-  (random-factored 2)  => NIL
-  (random-factored 42) => (2 5)
-  (random-factored 420000 :group? t) => ((2 . 3) (3 . 1) (3049 . 1))
+  (random-factors 1)  => ERROR!!
+  (random-factors 2)  => NIL
+  (random-factors 42) => (2 5)
+  (random-factors 420000 :group? t) => ((2 . 3) (3 . 1) (3049 . 1))
 "
   (unless (and (integerp n) (<= 2 n))
     (error "~S must be a integer above 1." n))

@@ -1,6 +1,6 @@
-Last modified : 2013-02-03 12:02:46 tkych
+Last modified : 2013-02-04 22:55:09 tkych
 
-Version: 0.0.10 (Alpha: Under Development)
+Version: 0.0.11 (Alpha: Under Development)
 
 
 CL-MOD-PRIME: Modular Arithmetic and Primes Library for CL
@@ -191,7 +191,7 @@ Under Implementation
 * primes-below
 * factorize
 * \*factorize-swiching-limit\*
-* random-factored
+* random-factors
 
 
 #### [Function] PRIME-P n
@@ -328,18 +328,18 @@ There is possibliliy that Rho-Method algorithm will be fail.
 If you always prefer Rho-Method algorithm, then (setf \*FACTORIZE-SWICHING-LIMIT\* 0) .
 
 
-#### [Function] RANDOM-FACTORED n &key (group? nil)
+#### [Function] RANDOM-FACTORS n &key (group? nil)
 
-Return random factored number below N.
+Return factorized random number below N.
 If group? is T, then factors will be grouped.
 N must be a integer above 1.
 
 Examples:
 
-    (random-factored 1)  => ERROR!!
-    (random-factored 2)  => NIL
-    (random-factored 42) => (2 5)
-    (random-factored 420000 :group? t) => ((2 . 3) (3 . 1) (3049 . 1))
+    (random-factors 1)  => ERROR!!
+    (random-factors 2)  => NIL
+    (random-factors 42) => (2 5)
+    (random-factors 420000 :group? t) => ((2 . 3) (3 . 1) (3049 . 1))
 
 
 ### Miscellaneous
@@ -398,6 +398,7 @@ TODO
 * MOD-NTH-ROOT: implement, optimaize, doc
 * MOD-SQRT: implement, optimaize, doc
 * DLOG: implement, optimaize, doc
+* CHINESE-REMAINDER: implement, optimaize, doc
 * JACOBI-SYMBOL: optimaize, doc
 * ORD: optimaize, doc
 * FACTORIZE: quadratic sieve, number field sieve

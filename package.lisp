@@ -1,4 +1,4 @@
-;;;; Last modified : 2013-02-01 20:57:35 tkych
+;;;; Last modified : 2013-02-04 22:50:06 tkych
 
 ;; cl-mod-prime/package.lisp
 
@@ -34,7 +34,7 @@
            #:primes-below
            #:factorize
            #:*factorize-swiching-limit*
-           #:random-factored
+           #:random-factors
            )
   )
 
