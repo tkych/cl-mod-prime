@@ -1,4 +1,4 @@
-;;;; Last modified : 2013-02-04 22:48:36 tkych
+;;;; Last modified : 2013-02-20 08:33:22 tkych
 
 ;; cl-mod-prime/prime.lisp
 
@@ -504,11 +504,11 @@ Examples:
 
 (defparameter *factorize-swiching-limit* 50000000
   "The function FACTORIZE has internal dispatch that controls algorithm of prime factorization.
-A integer below *FACTORIZE-SWICHING-LIMIT*, is factorized by Simple-Divition algorithm.
-A integer above *FACTORIZE-SWICHING-LIMIT*, is factorized by Rho-Method algorithm.
+A integer below *FACTORIZE-SWICHING-LIMIT*, is factorized by Trial-Division algorithm.
+A integer above *FACTORIZE-SWICHING-LIMIT*, is factorized by Pollard-Rho algorithm.
 The default value of *FACTORIZE-SWICHING-LIMIT* is 50000000.
-There is possibliliy that Rho-Method algorithm will be fail.
-If you always prefer Rho-Method algorithm, then (setf *FACTORIZE-SWICHING-LIMIT* 0) .
+There is possibliliy that Pollard-Rho algorithm will be fail.
+If you always prefer Pollard-Rho algorithm, then (setf *FACTORIZE-SWICHING-LIMIT* 0) .
 ")
 
 ;; (group-factors '(2 2 2 3)) => ((2 . 3) (3 . 1))
@@ -530,48 +530,48 @@ ALGORITHM is algorithm that is used in factorize computation.
 N must be a non-negative integer.
 If keyword :GROUP? is t, then output PRIME-FACTORS is grouped.
 Other keyword, :ALGORITHM specifies internal algorithm.
-:simple-division, :division, :div are Simple-Division algorithm.
-:rho-method, :rho are Rho-Method algorithm.
-:auto is Simple-Division or Rho-Method algorithm whether n is below *factorize-swiching-limit* or not.
+:trial-division, :division, :div are Trial-Divison algorithm.
+:pollard-rho, :rho are Pollard-Rho algorithm.
+:auto is Trial-Divison or Pollard-Rho algorithm whether n is below *factorize-swiching-limit* or not.
 
 Note:
-  :rho-method algorithm is sutable for a large N, but there is a chance result is FAIL.
+  :pollard-rho algorithm is sutable for a large N, but there is a chance result is FAIL.
   This FAIL has nothing to do with FAIL-PROBAILITY.
   FAIL-PROBAILITY is came from primt-p with miller-rabin algorithm,
-  wheras FAIL is intrinsic to rho-method algorithm.
+  whereas FAIL is intrinsic to pollard-rho algorithm.
 
 Examples:
-  (factorize 42)  => (2 3 7), 0, :SIMPLE-DIVISION
-  (factorize 1)   => NIL, 0, :SIMPLE-DIVISION
-  (factorize 0)   => NIL, 0, :SIMPLE-DIVISION
+  (factorize 42)  => (2 3 7), 0, :TRIAL-DIVISION
+  (factorize 1)   => NIL, 0, :TRIAL-DIVISION
+  (factorize 0)   => NIL, 0, :TRIAL-DIVISION
   (factorize -53) => ERROR!!
 
-  (factorize 1024) => (2 2 2 2 2 2 2 2 2 2), 0, :SIMPLE-DIVISION
-  (factorize 1024 :group? t) => ((2 . 10)), 0, :SIMPLE-DIVISION
+  (factorize 1024) => (2 2 2 2 2 2 2 2 2 2), 0, :TRIAL-DIVISION
+  (factorize 1024 :group? t) => ((2 . 10)), 0, :TRIAL-DIVISION
 
   (factorize 35262714657262341)
-     => (3 47 250090174874201), 1/1208925819614629174706176, :RHO-METHOD
+     => (3 47 250090174874201), 1/1208925819614629174706176, :POLLARD-RHO
   (factorize 25 :algorithm :rho)
-     => NIL, 1/1208925819614629174706176, :RHO-METHOD  ;!! FAIL !!
+     => NIL, 1/1208925819614629174706176, :POLLARD-RHO  ;!! FAIL !!
 "
   (unless (integerp n) (error "~S is not integer." n))
   (when (minusp n) (error "~S is not positive integer nor zero." n))
   (if (<= n 1)
-      (values '() 0 :simple-division)
+      (values '() 0 :trial-division)
       (multiple-value-bind (factors fail-prob algo)
           (case algorithm
             ((:auto)
              (if (<= n *factorize-swiching-limit*)
-                 (values (%sd-factorize n) 0 :simple-division)
+                 (values (%td-factorize n) 0 :trial-division)
                  (multiple-value-bind (facs prob)
                      (%rho-factorize n)
-                   (values facs prob :rho-method))))
-            ((:rho :rho-method)
+                   (values facs prob :pollard-rho))))
+            ((:rho :pollard-rho)
              (multiple-value-bind (facs prob)
                      (%rho-factorize n)
-                   (values facs prob :rho-method)))
-            ((:simple-division :divsion :div)
-             (values (%sd-factorize n) 0 :simple-division))
+                   (values facs prob :pollard-rho)))
+            ((:div :trial-division :divsion)
+             (values (%td-factorize n) 0 :trial-division))
             (t
              (error "~S is unknown algorithm." algorithm)))
         (values (if group? (%group-factors factors) factors)
@@ -579,7 +579,7 @@ Examples:
                 algo))))
 
 ;;--------------------------------------
-;; Simple-Division Algorithm
+;; Trial-Divison Algorithm
 ;;--------------------------------------
 ;; c.f. Project Euler, Problem 3, hk's overview.
 ;; Pre-optimized version:
@@ -600,15 +600,15 @@ Examples:
 ;;         (nreverse factors)
 ;;         (nreverse (push n factors)))))
 
-(defun %sd-factorize (n)
+(defun %td-factorize (n)
   (if (<= n most-positive-fixnum)
-      (%sd-factorize-fixnum n)
-      (%sd-factorize-integer n)))
+      (%td-factorize-fixnum n)
+      (%td-factorize-integer n)))
 
-(defun %sd-factorize-fixnum (n)
-  "%SD-FACTORIZE-FIXNUM is optimaized FACTORIZE for fixnum N."
+(defun %td-factorize-fixnum (n)
+  "%TD-FACTORIZE-FIXNUM is optimaized FACTORIZE for fixnum N."
   (declare (optimize (speed 3) (debug 0) (safety 0))
-           (ftype (function (fixnum) list) %sd-factorize-fixnum)
+           (ftype (function (fixnum) list) %td-factorize-fixnum)
            (fixnum n))
   (let ((factors '()))
     (declare (list factors))
@@ -629,10 +629,10 @@ Examples:
         (nreverse factors)
         (nreverse (push n factors)))))
 
-(defun %sd-factorize-integer (n)
-  "%SD-FACTORIZE-INTEGER is optimaized FACTORIZE for integer N."
+(defun %td-factorize-integer (n)
+  "%TD-FACTORIZE-INTEGER is optimaized FACTORIZE for integer N."
   (declare (optimize (speed 3) (debug 0) (safety 0))
-           (ftype (function (integer) list) %sd-factorize-integer)
+           (ftype (function (integer) list) %td-factorize-integer)
            (integer n))
   (let ((factors '()))
     (declare (list factors))
@@ -654,7 +654,7 @@ Examples:
         (nreverse (push n factors)))))
 
 ;;--------------------------------------
-;; RHO-METHOD Algorithm
+;; Pollard-Rho Algorithm
 ;;--------------------------------------
 ;; c.f, TAOCP2, p.385, Algorithm B (Factoring by the rho method).
 ;; Pre-optimized version:
@@ -667,7 +667,7 @@ Examples:
 ;;     (if (< n 2)
 ;;         (values factors 0)
 ;;         (let ((x0 5) (x1 2) (k 1) (j 1))                           ;B1
-;;           (loop :until (prime-p n) :do ;B2
+;;           (loop :until (prime-p n) :do                             ;B2
 ;;              (loop :for g := (gcd (- x1 x0) n) :do                 ;B3
 ;;                 (cond ((= g 1) (decf k)                            ;B4
 ;;                                (when (zerop k)

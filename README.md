@@ -1,4 +1,4 @@
-Last modified : 2013-02-04 22:55:09 tkych
+Last modified : 2013-02-21 18:43:19 tkych
 
 Version: 0.0.11 (Alpha: Under Development)
 
@@ -11,15 +11,6 @@ Introduction
 ------------
 
 CL-MOD-PRIME is a library of number theory for CL.
-The number theory (which is the queen of mathematics, including modular arithmetic and theorems about primes) is important for modern cryptography.
-For example, the theoretical basis of a public key cryptosystem (such as RSA based on trapdoor functions, or such as ElGamal based on Diffie-Hellman protocol) is the computational complexity of the prime factorization or the discrete logarithm (a sort of modulo logarithm).
-
-The goal of this library is being fast for ordinary use (e.g. solving a problem in Project Euler, etc.).
-
-I examined several algorithms that is suitable for the goal.
-But there may be a better algorithm that I don't know.
-I would appreciate if you tell me that better algorithm.
-And I welcome bug reports, typoes, suggestions, optimizations, patches, benchmarks, whatever.
 
 
 Download & Install
@@ -51,17 +42,17 @@ CL-REPL> (prime-p 4611686018427388039)
 CL-REPL> (factorize 42000000)
 => (2 2 2 2 2 2 2 3 5 5 5 5 5 5 7)   ;prime-factors
 => 0                                 ;fail probability
-=> :SIMPLE-DIVISION                  ;algorithm
+=> :TRIAL-DIVISION                   ;algorithm
 
 CL-REPL> (factorize 42000000 :group? t)
 => ((2 . 7) (3 . 1) (5 . 6) (7 . 1)) ;grouped-prime-factors
 => 0
-=> :SIMPLE-DIVISION
+=> :TRIAL-DIVISION
 
 CL-REPL> (factorize 42424242424242424242424242)
 => (2 3 7 53 79 859 265371653 1058313049)
 => 1/1267650600228229401496703205376
-=> :RHO-METHOD
+=> :POLLARD-RHO
 
 CL-REPL> (time (random-prime 1024))
 Evaluation took:
@@ -292,40 +283,40 @@ ALGORITHM is algorithm that is used in factorize computation.
 N must be a non-negative integer.
 If keyword :GROUP? is t, then output PRIME-FACTORS is grouped.
 Other keyword, :ALGORITHM specifies internal algorithm.
-:simple-division, :division, :div are Simple-Division algorithm.
-:rho-method, :rho are Rho-Method algorithm.
-:auto is Simple-Division or Rho-Method algorithm whether n is below *\factorize-swiching-limit\* or not.
+:trial-division, :division, :div are Trial-Division algorithm.
+:pollard-rho, :rho are Pollard-Rho algorithm.
+:auto is Trial-Division or Pollard-Rho algorithm whether n is below *\factorize-swiching-limit\* or not.
 
 Note:
 
-:rho-method algorithm is sutable for a large N, but there is a chance result is FAIL.
+:pollard-rho algorithm is sutable for a large N, but there is a chance result is FAIL.
 This FAIL has nothing to do with FAIL-PROBAILITY.
-FAIL-PROBAILITY is came from primt-p with Miller-Rabin algorithm, wheras FAIL is intrinsic to Rho-Method algorithm.
+FAIL-PROBAILITY is came from primt-p with Miller-Rabin algorithm, wheras FAIL is intrinsic to Pollard-Rho algorithm.
 
 Examples:
 
-    (factorize 42)  => (2 3 7), 0, :SIMPLE-DIVISION
-    (factorize 1)   => NIL, 0, :SIMPLE-DIVISION
-    (factorize 0)   => NIL, 0, :SIMPLE-DIVISION
+    (factorize 42)  => (2 3 7), 0, :TRIAL-DIVISION
+    (factorize 1)   => NIL, 0, :TRIAL-DIVISION
+    (factorize 0)   => NIL, 0, :TRIAL-DIVISION
     (factorize -53) => ERROR!!
 
-    (factorize 1024) => (2 2 2 2 2 2 2 2 2 2), 0, :SIMPLE-DIVISION
-    (factorize 1024 :group? t) => ((2 . 10)), 0, :SIMPLE-DIVISION
+    (factorize 1024) => (2 2 2 2 2 2 2 2 2 2), 0, :TRIAL-DIVISION
+    (factorize 1024 :group? t) => ((2 . 10)), 0, :TRIAL-DIVISION
 
     (factorize 35262714657262341)
-       => (3 47 250090174874201), 1/1208925819614629174706176, :RHO-METHOD
+       => (3 47 250090174874201), 1/1208925819614629174706176, :POLLARD-RHO
     (factorize 25 :algorithm :rho)
-       => NIL, 1/1208925819614629174706176, :RHO-METHOD  ;!! FAIL !!
+       => NIL, 1/1208925819614629174706176, :POLLARD-RHO  ;!! FAIL !!
 
 
 #### [Special Variable] \*FACTORIZE-SWICHING-LIMIT\*
 
 The function FACTORIZE has internal dispatch that controls algorithm of prime factorization.
-A integer below \*FACTORIZE-SWICHING-LIMIT\*, is factorize by Simple-Divition algorithm.
-A integer above \*FACTORIZE-SWICHING-LIMIT\*, is factorize by Rho-Method algorithm.
+A integer below \*FACTORIZE-SWICHING-LIMIT\*, is factorize by Trial-Division algorithm.
+A integer above \*FACTORIZE-SWICHING-LIMIT\*, is factorize by Pollard-Rho algorithm.
 The default value of \*FACTORIZE-SWICHING-LIMIT\* is 50000000.
-There is possibliliy that Rho-Method algorithm will be fail.
-If you always prefer Rho-Method algorithm, then (setf \*FACTORIZE-SWICHING-LIMIT\* 0) .
+There is possibliliy that Pollard-Rho algorithm will be fail.
+If you always prefer Pollard-Rho algorithm, then (setf \*FACTORIZE-SWICHING-LIMIT\* 0) .
 
 
 #### [Function] RANDOM-FACTORS n &key (group? nil)
@@ -401,7 +392,7 @@ TODO
 * CHINESE-REMAINDER: implement, optimaize, doc
 * JACOBI-SYMBOL: optimaize, doc
 * ORD: optimaize, doc
-* FACTORIZE: quadratic sieve, number field sieve
+* FACTORIZE: p-1 method, elliptic curve method, multiple polynominal quadratic sieve, number field sieve
 
 
 Reference
