@@ -3,8 +3,8 @@ Last modified : 2013-02-21 18:43:19 tkych
 Version: 0.0.11 (Alpha: Under Development)
 
 
-CL-MOD-PRIME: Modular Arithmetic and Primes Library for CL
-==========================================================
+CL-MOD-PRIME: Modular Arithmetic and Prime Number Library for CL
+================================================================
 
 
 Introduction
