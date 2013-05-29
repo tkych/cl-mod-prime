@@ -1,4 +1,4 @@
-;;;; Last modified : 2013-02-20 08:33:22 tkych
+;;;; Last modified : 2013-05-29 19:30:42 tkych
 
 ;; cl-mod-prime/prime.lisp
 
@@ -187,8 +187,7 @@ This function will not be called, except for *PRIME-P-SWICHING-LIMIT* is over mo
 (defun %mr-fail-prob ()
   (declare (optimize (speed 3) (debug 0) (safety 0))
            (ftype (function () rational)
-                  %mr-fail-prob)
-           (integer n))
+                  %mr-fail-prob))
   (/ 1 (the integer
          (ash 1
               (the integer
