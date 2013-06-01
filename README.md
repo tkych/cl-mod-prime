@@ -24,7 +24,7 @@ Download & Install
 Examples
 --------
 
-* My environment is: Linux-amd64, Core i3 2.20GHz, 4GB RAM, SBCL-1.3.3.
+* My environment is: Linux-amd64, Core i3 2.20GHz, 4GB RAM, SBCL-1.1.3.
 
 ```lisp
 
